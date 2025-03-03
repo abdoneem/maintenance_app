@@ -35,11 +35,6 @@ class _MaintenanceAppState extends State<MaintenanceApp> {
     });
   }
 
-  Future<String?> _checkLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
-  }
-
   @override
   void initState() {
     super.initState();
@@ -60,30 +55,52 @@ class _MaintenanceAppState extends State<MaintenanceApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: FutureBuilder(
-        future: _checkLoginStatus(),
-        builder: (context, AsyncSnapshot<String?> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasData && snapshot.data != null) {
-            return Directionality(
-              textDirection:
-                  _locale.languageCode == 'ar'
-                      ? TextDirection.rtl
-                      : TextDirection.ltr,
-              child: HomePage(onLanguageChange: _changeLanguage),
-            );
-          } else {
-            return Directionality(
-              textDirection:
-                  _locale.languageCode == 'ar'
-                      ? TextDirection.rtl
-                      : TextDirection.ltr,
-              child: LoginPage(onLanguageChange: _changeLanguage),
-            );
-          }
-        },
-      ),
+      home: AuthChecker(onLanguageChange: _changeLanguage, locale: _locale),
+    );
+  }
+}
+
+class AuthChecker extends StatefulWidget {
+  final Function(String) onLanguageChange;
+  final Locale locale;
+
+  AuthChecker({required this.onLanguageChange, required this.locale});
+
+  @override
+  _AuthCheckerState createState() => _AuthCheckerState();
+}
+
+class _AuthCheckerState extends State<AuthChecker> {
+  Future<String?> _checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<String?>(
+      future: _checkLoginStatus(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(body: Center(child: CircularProgressIndicator()));
+        } else if (snapshot.hasData && snapshot.data != null) {
+          return Directionality(
+            textDirection:
+                widget.locale.languageCode == 'ar'
+                    ? TextDirection.rtl
+                    : TextDirection.ltr,
+            child: HomePage(onLanguageChange: widget.onLanguageChange),
+          );
+        } else {
+          return Directionality(
+            textDirection:
+                widget.locale.languageCode == 'ar'
+                    ? TextDirection.rtl
+                    : TextDirection.ltr,
+            child: LoginPage(onLanguageChange: widget.onLanguageChange),
+          );
+        }
+      },
     );
   }
 }

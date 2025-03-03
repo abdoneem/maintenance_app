@@ -73,11 +73,11 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: context.tr('email')),
+              decoration: InputDecoration(labelText: context.tr('Email')),
             ),
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: context.tr('password')),
+              decoration: InputDecoration(labelText: context.tr('Password')),
               obscureText: true,
             ),
             SizedBox(height: 20),
