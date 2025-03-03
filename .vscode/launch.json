@@ -1,0 +1,45 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flutter Web (No SSL)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "-d", "chrome",
+                "--dart-define=FLUTTER_WEB=true",
+                "--dart-define=CHROME_EXECUTABLE=C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+            ],
+            "env": {
+                "FLUTTER_WEB": "true"
+            }
+        },
+        {
+            "name": "Flutter Web (Windows No SSL)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "-d", "chrome",
+                "--dart-define=FLUTTER_WEB=true",
+                "--dart-define=CHROME_EXECUTABLE=C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe --disable-web-security --ignore-certificate-errors --disable-gpu --enable-features=NetworkService,NetworkServiceInProcess"
+            ],
+            "env": {
+                "FLUTTER_WEB": "true"
+            }
+        },
+        {
+            "name": "maintenance_app (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "maintenance_app (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

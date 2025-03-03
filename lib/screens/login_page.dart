@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:maintenance_app/extensions/context_extensions.dart';
 import 'home_page.dart';
 import '../services/auth_service.dart';
-import '../utils/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   final Function(String) onLanguageChange;
 
-  LoginPage({required this.onLanguageChange});
+  const LoginPage({super.key, required this.onLanguageChange});
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.tr('login')),
+        title: Text(context.tr('Login')),
         actions: [
           PopupMenuButton<String>(
             onSelected: (String value) {
@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                 ? CircularProgressIndicator()
                 : ElevatedButton(
                   onPressed: _login,
-                  child: Text(context.tr('login')),
+                  child: Text(context.tr('Login')),
                 ),
             TextButton(
               onPressed: () {

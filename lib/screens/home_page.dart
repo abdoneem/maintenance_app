@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
+import '../extensions/context_extensions.dart'; // Import only this for translations
 
 class HomePage extends StatelessWidget {
   final Function(String) onLanguageChange;
 
-  HomePage({required this.onLanguageChange});
+  const HomePage({super.key, required this.onLanguageChange});
 
   Future<void> _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -42,7 +43,7 @@ class HomePage extends StatelessWidget {
       ),
       body: Center(
         child: Text(
-          'Welcome to Maintenance App!',
+          context.tr('Welcome to Maintenance App!'),
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),

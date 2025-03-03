@@ -1,25 +1,25 @@
 import 'package:http/http.dart' as http;
+import 'package:maintenance_app/config.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  static const String baseUrl = "https://your-dotnet-core-api.com/api/auth";
-
-  /// Login Method
-  static Future<Map<String, dynamic>> login(String email, String password) async {
+  static Future<Map<String, dynamic>> login(
+    String email,
+    String password,
+  ) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/login'),
+        Uri.parse(
+          '${AppConfig.baseUrl}/api/account/login?username=$email&password=$password',
+        ),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
+        body: null,
       );
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        String token = data['token'];
+        String token = data['access_token'];
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
@@ -34,15 +34,15 @@ class AuthService {
   }
 
   /// Register Method
-  static Future<Map<String, dynamic>> register(String email, String password) async {
+  static Future<Map<String, dynamic>> register(
+    String email,
+    String password,
+  ) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/register'),
+        Uri.parse('${AppConfig.baseUrl}/register'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
+        body: jsonEncode({'email': email, 'password': password}),
       );
 
       if (response.statusCode == 200) {

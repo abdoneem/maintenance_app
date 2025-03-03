@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:maintenance_app/extensions/context_extensions.dart';
 import 'login_page.dart';
 import '../services/auth_service.dart';
-import '../utils/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function(String) onLanguageChange;
 
-  RegisterPage({required this.onLanguageChange});
+  const RegisterPage({super.key, required this.onLanguageChange});
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -43,8 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            response['message'] ??
-                AppLocalizations.of(context).translate('registration_failed'),
+            response['message'] ?? context.tr('Registration failed'),
           ),
         ),
       );
@@ -55,7 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate('register')),
+        title: Text(context.tr('Register')),
         actions: [
           PopupMenuButton<String>(
             onSelected: (String value) {
@@ -76,15 +75,11 @@ class _RegisterPageState extends State<RegisterPage> {
           children: [
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(
-                labelText: AppLocalizations.of(context).translate('email'),
-              ),
+              decoration: InputDecoration(labelText: context.tr('Email')),
             ),
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(
-                labelText: AppLocalizations.of(context).translate('password'),
-              ),
+              decoration: InputDecoration(labelText: context.tr('Password')),
               obscureText: true,
             ),
             SizedBox(height: 20),
@@ -92,17 +87,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 ? CircularProgressIndicator()
                 : ElevatedButton(
                   onPressed: _register,
-                  child: Text(
-                    AppLocalizations.of(context).translate('register'),
-                  ),
+                  child: Text(context.tr('Register')),
                 ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text(
-                AppLocalizations.of(context).translate('already_have_account'),
-              ),
+              child: Text(context.tr('Already have an account')),
             ),
           ],
         ),
