@@ -82,8 +82,14 @@ class _MaintenanceAppState extends State<MaintenanceApp> {
         }
         return Locale('en');
       },
-      theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: '/', // Set initial route to AuthChecker
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.grey[100],
+        textTheme: TextTheme(
+          bodyLarge: TextStyle(fontSize: 18),
+          bodyMedium: TextStyle(fontSize: 16),
+        ),
+      ),
       routes: {
         '/':
             (context) =>

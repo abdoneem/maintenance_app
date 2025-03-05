@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:maintenance_app/extensions/context_extensions.dart';
-import 'login_page.dart';
+import 'package:maintenance_app/screens/home_page.dart';
 import '../services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -15,9 +14,18 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool _isLoading = false;
 
   Future<void> _register() async {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Passwords do not match")));
+      return;
+    }
+
     setState(() {
       _isLoading = true;
     });
@@ -36,16 +44,12 @@ class _RegisterPageState extends State<RegisterPage> {
         context,
         MaterialPageRoute(
           builder:
-              (context) => LoginPage(onLanguageChange: widget.onLanguageChange),
+              (context) => HomePage(onLanguageChange: widget.onLanguageChange),
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            response['message'] ?? context.tr('Registration failed'),
-          ),
-        ),
+        SnackBar(content: Text(response['message'] ?? 'Registration failed')),
       );
     }
   }
@@ -53,50 +57,83 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.tr('Register')),
-        actions: [
-          PopupMenuButton<String>(
-            onSelected: (String value) {
-              widget.onLanguageChange(value);
-            },
-            itemBuilder:
-                (BuildContext context) => [
-                  PopupMenuItem(value: 'en', child: Text('English')),
-                  PopupMenuItem(value: 'ar', child: Text('العربية')),
-                ],
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: context.tr('Email')),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: context.tr('Password')),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            _isLoading
-                ? CircularProgressIndicator()
-                : ElevatedButton(
-                  onPressed: _register,
-                  child: Text(context.tr('Register')),
+      backgroundColor: Colors.blueGrey[50], // Light background
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/logo.png', height: 100), // App Logo
+              const SizedBox(height: 20),
+              _buildTextField(_emailController, Icons.email, 'Email'),
+              const SizedBox(height: 10),
+              _buildTextField(
+                _passwordController,
+                Icons.lock,
+                'Password',
+                obscureText: true,
+              ),
+              const SizedBox(height: 10),
+              _buildTextField(
+                _confirmPasswordController,
+                Icons.lock_outline,
+                'Confirm Password',
+                obscureText: true,
+              ),
+              const SizedBox(height: 20),
+              _isLoading
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton(
+                    onPressed: _register,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue, // Button color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 30,
+                        vertical: 12,
+                      ),
+                      child: Text(
+                        "Register",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                    ),
+                  ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  "Already have an account? Login",
+                  style: TextStyle(color: Colors.blue),
                 ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(context.tr('Already have an account')),
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+    TextEditingController controller,
+    IconData icon,
+    String label, {
+    bool obscureText = false,
+  }) {
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        prefixIcon: Icon(icon),
+        labelText: label,
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
   }

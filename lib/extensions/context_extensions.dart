@@ -6,3 +6,7 @@ extension LocalizationExtension on BuildContext {
     return AppLocalizations.of(this).translate(key);
   }
 }
+
+extension ContextExtensions on BuildContext {
+  bool get isRtl => Directionality.of(this) == TextDirection.rtl;
+}
