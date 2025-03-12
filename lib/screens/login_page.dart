@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:maintenance_app/screens/home_page.dart';
+import 'package:maintenance_app/screens/base_page.dart';
 import 'package:maintenance_app/extensions/context_extensions.dart'; // ✅ Import context.tr()
 import '../services/auth_service.dart';
 
@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
         context,
         MaterialPageRoute(
           builder:
-              (context) => HomePage(onLanguageChange: widget.onLanguageChange),
+              (context) => BasePage(onLanguageChange: widget.onLanguageChange),
         ),
       );
     } else {

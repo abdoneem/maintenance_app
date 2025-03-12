@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:maintenance_app/extensions/context_extensions.dart';
+import 'package:maintenance_app/screens/account_page.dart';
 
 class HomePage extends StatelessWidget {
   final Function(String) onLanguageChange;
@@ -10,17 +12,33 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[200], // Light background
       appBar: AppBar(
-        title: const Text("Maintenance Dashboard"),
+        title: Text(context.tr("Maintenance Dashboard")),
         backgroundColor: Colors.blue,
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.language), // Language Icon
+            onSelected: (String value) {
+              onLanguageChange(value);
+            },
+            itemBuilder:
+                (BuildContext context) => [
+                  PopupMenuItem(
+                    value: 'en',
+                    child: Text(context.tr('English')),
+                  ),
+                  PopupMenuItem(value: 'ar', child: Text(context.tr('Arabic'))),
+                ],
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Welcome to Maintenance App",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            Text(
+              context.tr("Welcome to Maintenance App"),
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Expanded(
@@ -28,11 +46,22 @@ class HomePage extends StatelessWidget {
                 crossAxisCount: 2,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
+                shrinkWrap: true, // ✅ Fixes extra space issue
+                physics:
+                    NeverScrollableScrollPhysics(), // ✅ Prevents nested scrolling
                 children: [
-                  _buildCard("Tasks", Icons.task, Colors.orange),
-                  _buildCard("Reports", Icons.report, Colors.green),
-                  _buildCard("Settings", Icons.settings, Colors.blueGrey),
-                  _buildCard("Support", Icons.help, Colors.redAccent),
+                  _buildCard(context.tr("Tasks"), Icons.task, Colors.orange),
+                  _buildCard(context.tr("Reports"), Icons.report, Colors.green),
+                  _buildCard(
+                    context.tr("Settings"),
+                    Icons.settings,
+                    Colors.blueGrey,
+                  ),
+                  _buildCard(
+                    context.tr("Support"),
+                    Icons.help,
+                    Colors.redAccent,
+                  ),
                 ],
               ),
             ),

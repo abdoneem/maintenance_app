@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'screens/login_page.dart';
 import 'screens/home_page.dart';
 import 'screens/register_page.dart'; // Register page added
+import 'screens/base_page.dart'; // BasePage added
 import 'utils/app_localizations.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -95,7 +96,10 @@ class _MaintenanceAppState extends State<MaintenanceApp> {
             (context) =>
                 AuthChecker(onLanguageChange: _changeLanguage, locale: _locale),
         '/login': (context) => LoginPage(onLanguageChange: _changeLanguage),
-        '/home': (context) => HomePage(onLanguageChange: _changeLanguage),
+        '/home':
+            (context) => BasePage(
+              onLanguageChange: _changeLanguage,
+            ), // Use BasePage instead of HomePage
         '/register':
             (context) => RegisterPage(
               onLanguageChange: _changeLanguage,
